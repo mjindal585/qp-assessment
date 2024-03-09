@@ -1,0 +1,27 @@
+# Use the official Node.js 14 image
+FROM node:18
+
+# Set the working directory in the container
+WORKDIR /app
+
+# Copy package.json and package-lock.json
+COPY package*.json ./
+
+# Install dependencies
+RUN npm install
+
+# Copy the rest of the application code
+COPY . .
+
+# Copy the wait-for-mysql.sh script
+COPY wait-for-mysql.sh /app/
+
+# Expose port
+EXPOSE 8080
+
+# Command to run the application
+
+# Run the wait-for-mysql.sh script before starting the Node.js application
+CMD ["sh", "-c", "/app/wait-for-mysql.sh && npm start"]
+
+# CMD ["npm", "start"]
